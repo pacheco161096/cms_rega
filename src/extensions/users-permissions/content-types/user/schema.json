@@ -1,0 +1,126 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "apellido": {
+      "type": "string"
+    },
+    "rfc": {
+      "type": "string"
+    },
+    "celular": {
+      "type": "string"
+    },
+    "curp": {
+      "type": "string"
+    },
+    "razon_social": {
+      "type": "string"
+    },
+    "regimen_fiscal": {
+      "type": "string"
+    },
+    "cfdi": {
+      "type": "string"
+    },
+    "colonia": {
+      "type": "string"
+    },
+    "codigo_postal": {
+      "type": "string"
+    },
+    "calle": {
+      "type": "string"
+    },
+    "num_exterior": {
+      "type": "string"
+    },
+    "num_interior": {
+      "type": "string"
+    },
+    "ciudad": {
+      "type": "string"
+    },
+    "localidad": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "string"
+    },
+    "pais": {
+      "type": "string"
+    },
+    "tipo_servicio_paquete": {
+      "type": "string"
+    },
+    "estatus_servicio": {
+      "type": "boolean"
+    }
+  }
+}
