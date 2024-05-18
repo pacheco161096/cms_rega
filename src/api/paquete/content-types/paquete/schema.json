@@ -1,0 +1,90 @@
+{
+  "kind": "collectionType",
+  "collectionName": "paquetes",
+  "info": {
+    "singularName": "paquete",
+    "pluralName": "paquetes",
+    "displayName": "Paquete",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "titulo": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "velocidad": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "tipo": {
+      "type": "enumeration",
+      "enum": [
+        "hogar",
+        "negocio"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "precio": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "recargo": {
+      "type": "float",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "folio": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "categoria": {
+      "type": "enumeration",
+      "enum": [
+        "asimetrico",
+        "simetrico"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "caracteristicas": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::caracteristica.caracteristica",
+      "inversedBy": "paquetes"
+    }
+  }
+}

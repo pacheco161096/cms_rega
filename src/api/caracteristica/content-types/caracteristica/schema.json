@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "traslate_copies",
+  "collectionName": "caracteristicas",
   "info": {
-    "singularName": "traslate-copy",
-    "pluralName": "traslate-copies",
-    "displayName": "traslateCopy",
+    "singularName": "caracteristica",
+    "pluralName": "caracteristicas",
+    "displayName": "caracteristica",
     "description": ""
   },
   "options": {
@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "copyId": {
+    "caracteristica": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -24,13 +24,11 @@
       },
       "type": "string"
     },
-    "text": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
+    "paquetes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::paquete.paquete",
+      "mappedBy": "caracteristicas"
     }
   }
 }

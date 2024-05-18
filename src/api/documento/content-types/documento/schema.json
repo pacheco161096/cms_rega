@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "traslate_copies",
+  "collectionName": "documentos",
   "info": {
-    "singularName": "traslate-copy",
-    "pluralName": "traslate-copies",
-    "displayName": "traslateCopy",
+    "singularName": "documento",
+    "pluralName": "documentos",
+    "displayName": "Documento",
     "description": ""
   },
   "options": {
@@ -16,21 +16,29 @@
     }
   },
   "attributes": {
-    "copyId": {
+    "texto": {
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "type": "string"
+      }
     },
-    "text": {
+    "documento": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "type": "text"
+      }
     }
   }
 }

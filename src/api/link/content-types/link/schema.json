@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "traslate_copies",
+  "collectionName": "links",
   "info": {
-    "singularName": "traslate-copy",
-    "pluralName": "traslate-copies",
-    "displayName": "traslateCopy",
+    "singularName": "link",
+    "pluralName": "links",
+    "displayName": "Link",
     "description": ""
   },
   "options": {
@@ -16,21 +16,27 @@
     }
   },
   "attributes": {
-    "copyId": {
+    "texto": {
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "type": "string"
+      }
     },
-    "text": {
+    "url": {
+      "type": "text",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      },
-      "type": "text"
+      }
+    },
+    "footers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::footer.footer",
+      "inversedBy": "links"
     }
   }
 }
