@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_tickets_actualizacions",
+  "info": {
+    "displayName": "actualizacion",
+    "icon": "calendar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "fecha": {
+      "type": "date"
+    },
+    "descripcion": {
+      "type": "text"
+    }
+  }
+}

@@ -1253,13 +1253,11 @@ export interface ApiTicketTicket extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    fecha: Attribute.DateTime;
+    fecha: Attribute.Date;
     id_cliente: Attribute.BigInteger;
-    nombre_cliente: Attribute.String;
-    descripcion_reporte: Attribute.Text;
-    telefono: Attribute.Integer;
     estatus: Attribute.Enumeration<['En proceso', 'Finalizado']>;
-    tecnico_responsable: Attribute.String;
+    id_tecnico: Attribute.BigInteger;
+    actualizacion: Attribute.Component<'tickets.actualizacion', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

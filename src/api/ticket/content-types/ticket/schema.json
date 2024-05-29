@@ -13,19 +13,10 @@
   "pluginOptions": {},
   "attributes": {
     "fecha": {
-      "type": "datetime"
+      "type": "date"
     },
     "id_cliente": {
       "type": "biginteger"
-    },
-    "nombre_cliente": {
-      "type": "string"
-    },
-    "descripcion_reporte": {
-      "type": "text"
-    },
-    "telefono": {
-      "type": "integer"
     },
     "estatus": {
       "type": "enumeration",
@@ -34,8 +25,14 @@
         "Finalizado"
       ]
     },
-    "tecnico_responsable": {
-      "type": "string"
+    "id_tecnico": {
+      "type": "biginteger"
+    },
+    "actualizacion": {
+      "displayName": "actualizacion",
+      "type": "component",
+      "repeatable": true,
+      "component": "tickets.actualizacion"
     }
   }
 }
