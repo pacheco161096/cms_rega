@@ -121,6 +121,11 @@
     },
     "estatus_servicio": {
       "type": "boolean"
+    },
+    "Facturas": {
+      "type": "component",
+      "repeatable": true,
+      "component": "factura.factura"
     }
   }
 }

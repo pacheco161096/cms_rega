@@ -789,6 +789,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     pais: Attribute.String;
     tipo_servicio_paquete: Attribute.String;
     estatus_servicio: Attribute.Boolean;
+    Facturas: Attribute.Component<'factura.factura', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1140,6 +1141,12 @@ export interface ApiPaquetePaquete extends Schema.CollectionType {
       'manyToMany',
       'api::caracteristica.caracteristica'
     >;
+    imagen: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

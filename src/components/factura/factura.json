@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_factura_facturas",
+  "info": {
+    "displayName": "Factura",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "fecha": {
+      "type": "date"
+    },
+    "pagado": {
+      "type": "boolean"
+    },
+    "id_paquete": {
+      "type": "string"
+    }
+  }
+}
