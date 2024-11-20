@@ -790,6 +790,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     tipo_servicio_paquete: Attribute.String;
     estatus_servicio: Attribute.Boolean;
     Facturas: Attribute.Component<'factura.factura', true>;
+    id_mikrotik: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -126,6 +126,9 @@
       "type": "component",
       "repeatable": true,
       "component": "factura.factura"
+    },
+    "id_mikrotik": {
+      "type": "string"
     }
   }
 }
