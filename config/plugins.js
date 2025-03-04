@@ -1,5 +1,5 @@
 module.exports = ({env}) => ({
-  /*upload: {
+  upload: {
     config: {
       provider: "strapi-provider-upload-do",
       providerOptions: {
@@ -10,7 +10,7 @@ module.exports = ({env}) => ({
         directory: 'uploads',
       }
     },
-  },*/
+  },
   'import-export-entries': {
     enabled: true,
     config: {
