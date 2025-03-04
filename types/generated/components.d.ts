@@ -3,13 +3,14 @@ import type { Schema, Attribute } from '@strapi/strapi';
 export interface FacturaFactura extends Schema.Component {
   collectionName: 'components_factura_facturas';
   info: {
-    displayName: 'Factura';
+    displayName: 'factura';
     description: '';
   };
   attributes: {
     fecha: Attribute.Date;
     pagado: Attribute.Boolean;
     id_paquete: Attribute.String;
+    idTransaccion: Attribute.Text;
   };
 }
 

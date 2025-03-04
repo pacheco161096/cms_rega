@@ -129,6 +129,11 @@
     },
     "id_mikrotik": {
       "type": "string"
+    },
+    "recargo": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

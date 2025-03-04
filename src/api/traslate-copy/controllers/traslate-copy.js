@@ -82,6 +82,48 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
     } catch (error) {
       ctx.badRequest("Post report controller error", { moreDetails: error });
     }
+  },
+  async searchUserPayment(ctx) {
+    try {
+      const { idusuario } = ctx.request.body;
+      const usuario = await strapi.entityService.findOne(
+        "plugin::users-permissions.user",
+        idusuario,
+        {
+          fields: ['nombre','apellido', 'estatus_servicio', 'celular', 'email', 'recargo'],
+          populate: {
+            Facturas: {
+              populate: '*'
+            }
+          }
+        }
+      );
+
+      const { Facturas } = usuario;
+
+      // Filtrar facturas no pagadas
+      const filterFacturas = Facturas.filter(factura => !factura.pagado);
+
+      // Resolver Promesas para obtener los paquetes
+      const facturaPquetes = await Promise.all(
+        filterFacturas.map(async factura => {
+          const paquete = await strapi.entityService.findOne(
+            "api::paquete.paquete",
+            factura.id_paquete,
+            {
+              fields: ['titulo', 'precio'],
+            }
+          );
+          return {...paquete, fecha: factura.fecha, pagado: factura.pagado}
+        })
+      );
+
+      return  {
+        ...usuario, Facturas: facturaPquetes,
+      }
+    } catch (error) {
+      ctx.badRequest("Post report controller error", { moreDetails: error });
+    }
   }
 }));
 

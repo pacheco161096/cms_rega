@@ -8,6 +8,13 @@ module.exports = {
         auth:false
       },
     },
-
+    {
+      method: "POST",
+      path: "/searchUserPayment",
+      handler: "traslate-copy.searchUserPayment",
+      config: {
+        auth:false
+      },
+    },
   ],
 };
