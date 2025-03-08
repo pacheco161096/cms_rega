@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ventas_salidas",
+  "info": {
+    "singularName": "ventas-salida",
+    "pluralName": "ventas-salidas",
+    "displayName": "ventas_salidas",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fecha": {
+      "type": "datetime"
+    },
+    "tipo": {
+      "type": "enumeration",
+      "enum": [
+        "venta",
+        "salida"
+      ]
+    },
+    "metodo": {
+      "type": "string"
+    },
+    "idusuario": {
+      "type": "string"
+    }
+  }
+}

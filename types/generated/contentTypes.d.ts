@@ -794,6 +794,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     recargo: Attribute.Boolean &
       Attribute.Required &
       Attribute.DefaultTo<false>;
+    idpaquete: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1340,6 +1341,40 @@ export interface ApiTraslateCopyTraslateCopy extends Schema.CollectionType {
   };
 }
 
+export interface ApiVentasSalidaVentasSalida extends Schema.CollectionType {
+  collectionName: 'ventas_salidas';
+  info: {
+    singularName: 'ventas-salida';
+    pluralName: 'ventas-salidas';
+    displayName: 'ventas_salidas';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    fecha: Attribute.DateTime;
+    tipo: Attribute.Enumeration<['venta', 'salida']>;
+    metodo: Attribute.String;
+    idusuario: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ventas-salida.ventas-salida',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ventas-salida.ventas-salida',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1367,6 +1402,7 @@ declare module '@strapi/types' {
       'api::slider.slider': ApiSliderSlider;
       'api::ticket.ticket': ApiTicketTicket;
       'api::traslate-copy.traslate-copy': ApiTraslateCopyTraslateCopy;
+      'api::ventas-salida.ventas-salida': ApiVentasSalidaVentasSalida;
     }
   }
 }
