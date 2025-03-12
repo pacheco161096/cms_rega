@@ -16,7 +16,7 @@
       "type": "string"
     },
     "idTransaccion": {
-      "type": "text"
+      "type": "integer"
     }
   }
 }

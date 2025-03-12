@@ -1288,6 +1288,44 @@ export interface ApiTicketTicket extends Schema.CollectionType {
   };
 }
 
+export interface ApiTransaccionTransaccion extends Schema.CollectionType {
+  collectionName: 'transacciones';
+  info: {
+    singularName: 'transaccion';
+    pluralName: 'transacciones';
+    displayName: 'transacciones';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    fecha: Attribute.DateTime;
+    titulo: Attribute.String;
+    precio: Attribute.Float;
+    cantidad: Attribute.Float;
+    total: Attribute.Float;
+    type: Attribute.String;
+    idProducto: Attribute.Integer;
+    idTransaccion: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::transaccion.transaccion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::transaccion.transaccion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTraslateCopyTraslateCopy extends Schema.CollectionType {
   collectionName: 'traslate_copies';
   info: {
@@ -1401,6 +1439,7 @@ declare module '@strapi/types' {
       'api::paquete.paquete': ApiPaquetePaquete;
       'api::slider.slider': ApiSliderSlider;
       'api::ticket.ticket': ApiTicketTicket;
+      'api::transaccion.transaccion': ApiTransaccionTransaccion;
       'api::traslate-copy.traslate-copy': ApiTraslateCopyTraslateCopy;
       'api::ventas-salida.ventas-salida': ApiVentasSalidaVentasSalida;
     }

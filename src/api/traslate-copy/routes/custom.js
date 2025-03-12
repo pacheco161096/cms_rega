@@ -16,13 +16,5 @@ module.exports = {
         auth:false
       },
     },
-    {
-      method: "POST",
-      path: "/pay",
-      handler: "traslate-copy.pay",
-      config: {
-        auth:false
-      },
-    },
   ],
 };

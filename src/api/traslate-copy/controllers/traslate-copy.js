@@ -1,6 +1,7 @@
 // @ts-ignore
 const axios = require('axios');
 const https = require('https');
+const moment = require('moment');
 /**
  * traslate-copy controller
  */
@@ -9,39 +10,105 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::traslate-copy.traslate-copy',({strapi}) => ({
   async payment(ctx) {
+    const trx = await strapi.db.transaction(); // Inicia transacción
     try {
-      const { idusuario, idfactura } = ctx.request.body;
-      const usuario = await strapi.entityService.findOne(
-        "plugin::users-permissions.user",
-        idusuario,
-        {
-          fields: ['nombre','apellido', 'estatus_servicio', 'id_mikrotik'],
-          populate: {
-            Facturas: {
-              populate: '*'
-            }
+      const { idusuario, carshop, metodo } = ctx.request.body;
+      let usuario = {};
+      if (idusuario) {
+          // 1️⃣ Buscar usuario con sus facturas
+        usuario = await strapi.entityService.findOne(
+          "plugin::users-permissions.user",
+          idusuario,
+          {
+            fields: ["nombre", "apellido", "estatus_servicio", "id_mikrotik", "email", 'idpaquete'],
+            populate: { Facturas: { populate: "*" } },
+            transaction: trx,
           }
-        }
-      );
-      const { Facturas } = usuario;
-      const filterFacturas = (
-        Facturas.map(factura => {
-          if (factura.id === idfactura ) {
-            factura.pagado = true;
-          }
-          return factura
+        );
+      }
+
+      const paquetes = carshop.filter(item => item.type === "paquete")
+      const productos = carshop.filter(item => item.type === "producto");
+      let { Facturas } = usuario; // 🔹 Extraemos las facturas
+      let newFacturas = [...Facturas]; // 🔹 Copia para evitar modificar el original
+      let sinAdeudo = false
+
+      const ventaData = {
+        fecha: new Date(), // Fecha de hoy en formato "YYYY-MM-DD"
+        tipo: "venta", // "venta" o "salida"
+        metodo: metodo, // "tarjeta", "efectivo", etc.
+        idusuario: '2', // ID del usuario que hizo la venta
+        publishedAt: new Date()
+      };
+
+      const nuevaTransaccion = await strapi.entityService.create("api::ventas-salida.ventas-salida", {
+        data: ventaData,
+        transaction: trx,
+      });
+
+      await Promise.all(
+        carshop.map(async (item) => {
+          await strapi.entityService.create("api::transaccion.transaccion", {
+            data: {
+              fecha: new Date(),
+              idTransaccion: nuevaTransaccion.id,
+              idProducto: item.id,
+              titulo: item.titulo,
+              precio: item.precio,
+              cantidad: item.cantidad,
+              total: item.precio * item.cantidad,
+              type: item.type,
+              publishedAt: new Date(),
+            },
+            transaction: trx,
+          });
         })
       );
 
-      await strapi.entityService.update(
-        "plugin::users-permissions.user",
-        idusuario,
-        {
-          data: {...usuario, Facturas: filterFacturas, estatus_servicio: true}
-        }
-      );
 
-      if (usuario.estatus_servicio !== true) {
+
+      if (paquetes.length > 0) {
+        let facturasPendientes = newFacturas.filter(factura => !factura.pagado);
+        const masReciente = newFacturas.reduce((a, b) =>
+          new Date(a.fecha) > new Date(b.fecha) ? a : b
+        );
+        let fechaMasReciente = newFacturas.length > 0 ? masReciente.fecha : moment().format('YYYY-MM-DD');
+
+        paquetes.forEach(paquete => {
+          let cantidad = paquete.cantidad;
+          let nextFacturas = []
+
+         if (facturasPendientes.length > 0) {
+           // 🔹 Cubrir facturas pendientes con los paquetes disponibles
+          for (let i = 0; i <= cantidad && i <= facturasPendientes.length; i++) {
+            facturasPendientes[i].pagado = true;
+            cantidad = cantidad -1
+          }
+          // 🔹 Actualizar las facturas originales
+          newFacturas = newFacturas.map(factura => ({
+            ...factura,
+            pagado: facturasPendientes.some(f => f.id === factura.id && f.pagado === true) ? true : factura.pagado,
+            idTransaccion: nuevaTransaccion.id,
+          }));
+         }
+
+         if (cantidad > 0) {
+          for (let i = 0; i < cantidad ; i++) {
+            newFacturas.push({ fecha: moment(fechaMasReciente).add(i+1, "months").format("YYYY-MM-DD"), pagado: true, id_paquete: usuario.idpaquete, idTransaccion: nuevaTransaccion.id})
+          }
+         }
+        });
+
+        sinAdeudo = newFacturas.every(item => item.pagado === true)
+        await strapi.entityService.update(
+          "plugin::users-permissions.user",
+          idusuario,
+          {
+            data: {...usuario, Facturas: newFacturas, estatus_servicio: sinAdeudo ? true : false},
+          }
+        );
+      }
+      /*if (usuario.estatus_servicio !== true && sinAdeudo) {
         const httpsAgent = new https.Agent({
           rejectUnauthorized: false,
         })
@@ -74,13 +141,14 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
               console.error('Error al configurar la solicitud:', error.message);
             }
           });
-      }
+      }*/
+      await trx.commit(); // ✅ Confirmar transacción si todo sale bien
 
-      return  {
-        ...usuario, Facturas: filterFacturas
-      }
+      return { ...usuario, pagoexitoso: true};
     } catch (error) {
-      ctx.badRequest("Post report controller error", { moreDetails: error });
+      console.error('Error en la transacción:', error.message);
+      await trx.rollback(); // Revertir si hay error
+      ctx.badRequest("Error en el pago", { moreDetails: error.message });
     }
   },
   async searchUserPayment(ctx) {
@@ -114,116 +182,23 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
               fields: ['titulo', 'precio'],
             }
           );
-          return {...paquete, fecha: factura.fecha, pagado: factura.pagado}
+          return {...paquete, fecha: factura.fecha, pagado: factura.pagado, idfactura: factura.id}
         })
       );
 
       const paqueteActual = await strapi.entityService.findOne(
-        "api::paquete.paquete",
-        usuario.idpaquete,
-        {
-          fields: ['titulo', 'precio'],
-        }
-      )
+            "api::paquete.paquete",
+            usuario.idpaquete,
+            {
+              fields: ['titulo', 'precio'],
+            }
+        )
 
       return  {
         ...usuario, Facturas: facturaPquetes, paqueteActual
       }
     } catch (error) {
       ctx.badRequest("Post report controller error", { moreDetails: error });
-    }
-  },
-  async pay(ctx) {
-    const trx = await strapi.db.transaction();
-
-    try {
-      const { idusuario, carshop } = ctx.request.body;
-      console.log(idusuario, carshop)
-      if (!idusuario || !carshop?.length) {
-        throw new Error("Datos incompletos");
-      }
-
-      // 1️⃣ Buscar usuario y su facturación
-      const usuario = await strapi.entityService.findOne(
-        "plugin::users-permissions.user",
-        idusuario,
-        {
-          fields: ['nombre','apellido', 'estatus_servicio', 'id_mikrotik'],
-          populate: {
-            Facturas: {
-              populate: '*'
-            }
-          }
-        }
-      );
-
-      if (!usuario) {
-        throw new Error("Usuario no encontrado");
-      }
-      /*
-      // 2️⃣ Separar paquetes y productos
-      const paquetes = carshop.filter(item => item.type === "paquete");
-      const productos = carshop.filter(item => item.type === "producto");
-
-      // 3️⃣ Actualizar facturas del usuario
-      if (paquetes.length) {
-        usuario.Facturas.push(...paquetes);
-        await strapi.db.query("api::usuario.usuario").update({
-          where: { id: idusuario },
-          data: { Facturas: usuario.Facturas },
-          transaction: trx,
-        });
-      }
-
-      // 4️⃣ Validar stock y actualizar productos
-      for (const prod of productos) {
-        const productoDB = await strapi.db.query("api::producto.producto").findOne({
-          where: { id: prod.id },
-        });
-
-        if (!productoDB || productoDB.stock < prod.cantidad) {
-          throw new Error(`Stock insuficiente para el producto ${prod.id}`);
-        }
-
-        await strapi.db.query("api::producto.producto").update({
-          where: { id: prod.id },
-          data: { stock: productoDB.stock - prod.cantidad },
-          transaction: trx,
-        });
-      }
-
-      // 5️⃣ Registrar venta/salida
-      /*const ventaSalida = await strapi.db.query("api::ventas-salida.ventas-salida").create({
-        data: {
-          tipo_transaccion: "venta",
-          metodo:'efectivo',
-          fecha: new Date()
-        },
-        transaction: trx,
-      });
-
-      // 6️⃣ Registrar transacción
-      const transaccion = await strapi.db.query("api::transaccion.transaccion").create({
-        data: {
-          usuario: idusuario,
-          detalles: carshop,
-          total: carshop.reduce((acc, item) => acc + item.precio * item.cantidad, 0),
-        },
-        transaction: trx,
-      });*/
-
-
-      console.log(usuario, 'usuario');
-      // 7️⃣ Confirmar cambios en la BD
-      // await trx.commit();
-
-      // 9️⃣ Responder éxito*/
-      console.log(usuario, 'usuario')
-      ctx.send({ message: "Pago registrado y notificación enviada exitosamente" })
-
-    } catch (error) {
-      // await trx.rollback();
-      ctx.badRequest("Error en el pago", { moreDetails: error.message });
     }
   }
 }));

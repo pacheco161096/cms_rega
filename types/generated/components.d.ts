@@ -10,7 +10,7 @@ export interface FacturaFactura extends Schema.Component {
     fecha: Attribute.Date;
     pagado: Attribute.Boolean;
     id_paquete: Attribute.String;
-    idTransaccion: Attribute.Text;
+    idTransaccion: Attribute.Integer;
   };
 }
 

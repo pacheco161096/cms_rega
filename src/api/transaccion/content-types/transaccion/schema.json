@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transacciones",
+  "info": {
+    "singularName": "transaccion",
+    "pluralName": "transacciones",
+    "displayName": "transacciones",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fecha": {
+      "type": "datetime"
+    },
+    "titulo": {
+      "type": "string"
+    },
+    "precio": {
+      "type": "float"
+    },
+    "cantidad": {
+      "type": "float"
+    },
+    "total": {
+      "type": "float"
+    },
+    "type": {
+      "type": "string"
+    },
+    "idProducto": {
+      "type": "integer"
+    },
+    "idTransaccion": {
+      "type": "integer"
+    }
+  }
+}
