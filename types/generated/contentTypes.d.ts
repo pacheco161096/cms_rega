@@ -1379,6 +1379,40 @@ export interface ApiTraslateCopyTraslateCopy extends Schema.CollectionType {
   };
 }
 
+export interface ApiUsuarioUsuario extends Schema.CollectionType {
+  collectionName: 'usuarios';
+  info: {
+    singularName: 'usuario';
+    pluralName: 'usuarios';
+    displayName: 'usuario';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    usuario: Attribute.String;
+    email: Attribute.String;
+    contrasena: Attribute.String;
+    nombre: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::usuario.usuario',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::usuario.usuario',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiVentasSalidaVentasSalida extends Schema.CollectionType {
   collectionName: 'ventas_salidas';
   info: {
@@ -1441,6 +1475,7 @@ declare module '@strapi/types' {
       'api::ticket.ticket': ApiTicketTicket;
       'api::transaccion.transaccion': ApiTransaccionTransaccion;
       'api::traslate-copy.traslate-copy': ApiTraslateCopyTraslateCopy;
+      'api::usuario.usuario': ApiUsuarioUsuario;
       'api::ventas-salida.ventas-salida': ApiVentasSalidaVentasSalida;
     }
   }

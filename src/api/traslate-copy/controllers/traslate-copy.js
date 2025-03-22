@@ -108,7 +108,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
           }
         );
       }
-      /*if (usuario.estatus_servicio !== true && sinAdeudo) {
+      if (usuario.estatus_servicio !== true && sinAdeudo) {
         const httpsAgent = new https.Agent({
           rejectUnauthorized: false,
         })
@@ -141,7 +141,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
               console.error('Error al configurar la solicitud:', error.message);
             }
           });
-      }*/
+      }
       await trx.commit(); // ✅ Confirmar transacción si todo sale bien
 
       return { ...usuario, pagoexitoso: true};
