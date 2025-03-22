@@ -137,6 +137,9 @@
     },
     "idpaquete": {
       "type": "string"
+    },
+    "listado_region": {
+      "type": "string"
     }
   }
 }
