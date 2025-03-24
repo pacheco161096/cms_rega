@@ -796,6 +796,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.DefaultTo<false>;
     idpaquete: Attribute.String;
     listado_region: Attribute.String;
+    ip_address: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

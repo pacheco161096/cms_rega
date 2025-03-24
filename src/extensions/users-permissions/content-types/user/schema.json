@@ -140,6 +140,9 @@
     },
     "listado_region": {
       "type": "string"
+    },
+    "ip_address": {
+      "type": "string"
     }
   }
 }
