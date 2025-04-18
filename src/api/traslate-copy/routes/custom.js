@@ -16,5 +16,13 @@ module.exports = {
         auth:false
       },
     },
+    {
+      method: "GET",
+      path: "/validateMikrotik",
+      handler: "traslate-copy.validateMikrotik",
+      config: {
+        auth:false
+      },
+    },
   ],
 };

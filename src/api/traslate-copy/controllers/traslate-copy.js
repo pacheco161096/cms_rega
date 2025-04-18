@@ -28,7 +28,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
       }
 
       const paquetes = carshop.filter(item => item.type === "paquete")
-      const productos = carshop.filter(item => item.type === "producto");
+      const productos = carshop.filter(item => item.type === "producto"); //se queda aqui hasta que metamos compra de productos
       let { Facturas } = usuario; // 🔹 Extraemos las facturas
       let newFacturas = [...Facturas]; // 🔹 Copia para evitar modificar el original
       let sinAdeudo = false
@@ -119,7 +119,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
 
         instance.patch(`https://189.204.159.230:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
           {
-          "disabled": "true"
+          "disabled": ""
           }, {
           auth: {
             username: 'noe',
@@ -200,6 +200,40 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
     } catch (error) {
       ctx.badRequest("Post report controller error", { moreDetails: error });
     }
+  },
+  async validateMikrotik(ctx) {
+    let mikrotikone= false;
+    const httpsAgent = new https.Agent({
+      rejectUnauthorized: false,
+    })
+
+    const instance = axios.create({
+      httpsAgent,
+    });
+
+    await instance.get(`https://189.204.159.230:443/rest/ip/firewall/address-list`, {
+      auth: {
+        username: 'noe',
+        password: 'RegaTelecom.2024',
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      console.log('Respuesta:', response.data);
+      mikrotikone = response?.data?.length > 0 ? true : false;
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error('Error en la respuesta:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('No se recibió respuesta del servidor:', error);
+      } else {
+        console.error('Error al configurar la solicitud:', error.message);
+      }
+    });
+
+    return { serviceActive: mikrotikone}
   }
 }));
 
