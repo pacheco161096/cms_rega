@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cajas",
+  "info": {
+    "singularName": "caja",
+    "pluralName": "cajas",
+    "displayName": "caja"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "montoApertura": {
+      "type": "float"
+    },
+    "employeeId": {
+      "type": "string"
+    },
+    "montoCierre": {
+      "type": "float"
+    },
+    "fechaHoraApertura": {
+      "type": "datetime"
+    },
+    "fechaHoraCierre": {
+      "type": "datetime"
+    }
+  }
+}

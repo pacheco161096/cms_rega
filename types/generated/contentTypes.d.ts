@@ -814,6 +814,32 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiCajaCaja extends Schema.CollectionType {
+  collectionName: 'cajas';
+  info: {
+    singularName: 'caja';
+    pluralName: 'cajas';
+    displayName: 'caja';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    montoApertura: Attribute.Float;
+    employeeId: Attribute.String;
+    montoCierre: Attribute.Float;
+    fechaHoraApertura: Attribute.DateTime;
+    fechaHoraCierre: Attribute.DateTime;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::caja.caja', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::caja.caja', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCaracteristicaCaracteristica extends Schema.CollectionType {
   collectionName: 'caracteristicas';
   info: {
@@ -1467,6 +1493,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::caja.caja': ApiCajaCaja;
       'api::caracteristica.caracteristica': ApiCaracteristicaCaracteristica;
       'api::card.card': ApiCardCard;
       'api::documento.documento': ApiDocumentoDocumento;
