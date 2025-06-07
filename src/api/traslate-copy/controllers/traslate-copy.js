@@ -109,6 +109,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
         );
       }
       if (usuario.estatus_servicio !== true && sinAdeudo) {
+        console.log('entramos aqui')
         const httpsAgent = new https.Agent({
           rejectUnauthorized: false,
         })
