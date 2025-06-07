@@ -117,13 +117,13 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
           httpsAgent,
         });
 
-        instance.patch(`https://189.204.159.230:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
+        instance.patch(`https://189.204.159.229:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
           {
           "disabled": ""
           }, {
           auth: {
             username: 'noe',
-            password: 'RegaTelecom.2024',
+            password: 'Pacheco.2020',
           },
           headers: {
             'Content-Type': 'application/json',
@@ -220,7 +220,6 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
         'Content-Type': 'application/json',
       },
     }).then(response => {
-      console.log('Respuesta:', response.data);
       mikrotikone = response?.data?.length > 0 ? true : false;
     })
     .catch(error => {
