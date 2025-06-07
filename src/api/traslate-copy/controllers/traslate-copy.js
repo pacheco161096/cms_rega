@@ -117,13 +117,13 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
           httpsAgent,
         });
 
-        instance.patch(`https://189.204.159.229:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
+        instance.patch(`https://189.204.159.230:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
           {
-          "disabled": ""
+          "disabled": "true"
           }, {
           auth: {
             username: 'noe',
-            password: 'Pacheco.2020',
+            password: 'RegaTelecom.2024',
           },
           headers: {
             'Content-Type': 'application/json',
