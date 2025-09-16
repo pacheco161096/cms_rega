@@ -109,39 +109,34 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
         );
       }
       if (usuario.estatus_servicio !== true && sinAdeudo) {
-        console.log('entramos aqui')
-        const httpsAgent = new https.Agent({
-          rejectUnauthorized: false,
-        })
-
-        const instance = axios.create({
-          httpsAgent,
-        });
-
-        instance.patch(`https://189.204.159.230:443/rest/ip/firewall/address-list/*${usuario.id_mikrotik}`,
-          {
-          "disabled": "true"
-          }, {
-          auth: {
-            username: 'noe',
-            password: 'RegaTelecom.2024',
-          },
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then(response => {
-            console.log('Respuesta:', response.data);
-          })
-          .catch(error => {
-            if (error.response) {
-              console.error('Error en la respuesta:', error.response.status, error.response.data);
-            } else if (error.request) {
-              console.error('No se recibió respuesta del servidor:', error);
-            } else {
-              console.error('Error al configurar la solicitud:', error.message);
-            }
+        try {
+          // 1. Pedimos el token
+          const tokenResponse = await axios.post("http://yg8ss8csc0kcs4c8cs00g4gw.72.60.117.117.sslip.io/auth/login", {
+            username: "noe",
+            password: "Pacheco.2025",
           });
+
+          const token = tokenResponse.data.access_token;
+
+          // 2. Usamos el token para otra consulta
+          const dataResponse = await axios.post(
+            "http://yg8ss8csc0kcs4c8cs00g4gw.72.60.117.117.sslip.io/address-list/disabled",
+            {
+              comments: [`${usuario.id_mikrotik}`],
+              disabled: true, // true es para darle servicio en mikrotik
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          console.log("Datos:", dataResponse.data);
+        } catch (error) {
+          console.error("Error en la petición:", error);
+        }
       }
       await trx.commit(); // ✅ Confirmar transacción si todo sale bien
 
