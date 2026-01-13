@@ -23,6 +23,15 @@
     },
     "nombre": {
       "type": "string"
+    },
+    "rol": {
+      "type": "enumeration",
+      "enum": [
+        "Admin",
+        "Supervisor",
+        "Cajero",
+        "Tecnico"
+      ]
     }
   }
 }

@@ -1298,6 +1298,7 @@ export interface ApiTicketTicket extends Schema.CollectionType {
     estatus: Attribute.Enumeration<['En proceso', 'Finalizado']>;
     id_tecnico: Attribute.BigInteger;
     actualizacion: Attribute.Component<'tickets.actualizacion', true>;
+    descripcion: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1423,6 +1424,7 @@ export interface ApiUsuarioUsuario extends Schema.CollectionType {
     email: Attribute.String;
     contrasena: Attribute.String;
     nombre: Attribute.String;
+    rol: Attribute.Enumeration<['Admin', 'Supervisor', 'Cajero', 'Tecnico']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
