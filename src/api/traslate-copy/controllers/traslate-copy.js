@@ -12,13 +12,13 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
   async payment(ctx) {
     const trx = await strapi.db.transaction(); // Inicia transacción
     try {
-      const { idusuario, carshop, metodo } = ctx.request.body;
+      const { idCliente, carshop, metodo, idUsuario } = ctx.request.body;
       let usuario = {};
-      if (idusuario) {
+      if (idCliente) {
           // 1️⃣ Buscar usuario con sus facturas
         usuario = await strapi.entityService.findOne(
           "plugin::users-permissions.user",
-          idusuario,
+          idCliente,
           {
             fields: ["nombre", "apellido", "estatus_servicio", "id_mikrotik", "email", 'idpaquete'],
             populate: { Facturas: { populate: "*" } },
@@ -37,7 +37,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
         fecha: new Date(), // Fecha de hoy en formato "YYYY-MM-DD"
         tipo: "venta", // "venta" o "salida"
         metodo: metodo, // "tarjeta", "efectivo", etc.
-        idusuario: '2', // ID del usuario que hizo la venta
+        idusuario: idUsuario, // ID del usuario que hizo la venta
         publishedAt: new Date()
       };
 
@@ -102,7 +102,7 @@ module.exports = createCoreController('api::traslate-copy.traslate-copy',({strap
         sinAdeudo = newFacturas.every(item => item.pagado === true)
         await strapi.entityService.update(
           "plugin::users-permissions.user",
-          idusuario,
+          idCliente,
           {
             data: {...usuario, Facturas: newFacturas, estatus_servicio: sinAdeudo ? true : false},
           }
