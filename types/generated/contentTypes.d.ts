@@ -1060,6 +1060,39 @@ export interface ApiFooterFooter extends Schema.CollectionType {
   };
 }
 
+export interface ApiGastoGasto extends Schema.CollectionType {
+  collectionName: 'gastos';
+  info: {
+    singularName: 'gasto';
+    pluralName: 'gastos';
+    displayName: 'Gasto';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    fecha: Attribute.Date;
+    metodo: Attribute.String;
+    idusuario: Attribute.String;
+    concepto: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::gasto.gasto',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::gasto.gasto',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiLinkLink extends Schema.CollectionType {
   collectionName: 'links';
   info: {
@@ -1500,6 +1533,7 @@ declare module '@strapi/types' {
       'api::card.card': ApiCardCard;
       'api::documento.documento': ApiDocumentoDocumento;
       'api::footer.footer': ApiFooterFooter;
+      'api::gasto.gasto': ApiGastoGasto;
       'api::link.link': ApiLinkLink;
       'api::paquete.paquete': ApiPaquetePaquete;
       'api::slider.slider': ApiSliderSlider;

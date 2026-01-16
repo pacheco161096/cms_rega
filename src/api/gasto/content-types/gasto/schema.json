@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gastos",
+  "info": {
+    "singularName": "gasto",
+    "pluralName": "gastos",
+    "displayName": "Gasto"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fecha": {
+      "type": "date"
+    },
+    "metodo": {
+      "type": "string"
+    },
+    "idusuario": {
+      "type": "string"
+    },
+    "concepto": {
+      "type": "text"
+    }
+  }
+}
