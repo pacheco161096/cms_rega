@@ -1072,7 +1072,7 @@ export interface ApiGastoGasto extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    fecha: Attribute.Date;
+    fecha: Attribute.DateTime;
     metodo: Attribute.String;
     idusuario: Attribute.String;
     concepto: Attribute.Text;

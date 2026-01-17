@@ -13,7 +13,7 @@
   "pluginOptions": {},
   "attributes": {
     "fecha": {
-      "type": "date"
+      "type": "datetime"
     },
     "metodo": {
       "type": "string"
