@@ -1066,6 +1066,7 @@ export interface ApiGastoGasto extends Schema.CollectionType {
     singularName: 'gasto';
     pluralName: 'gastos';
     displayName: 'Gasto';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1075,6 +1076,7 @@ export interface ApiGastoGasto extends Schema.CollectionType {
     metodo: Attribute.String;
     idusuario: Attribute.String;
     concepto: Attribute.Text;
+    monto: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
