@@ -1494,6 +1494,7 @@ export interface ApiVentasSalidaVentasSalida extends Schema.CollectionType {
     tipo: Attribute.Enumeration<['venta', 'salida']>;
     metodo: Attribute.String;
     idusuario: Attribute.String;
+    referencia: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
