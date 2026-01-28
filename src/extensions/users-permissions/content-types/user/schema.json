@@ -143,6 +143,9 @@
     },
     "ip_address": {
       "type": "string"
+    },
+    "synced": {
+      "type": "boolean"
     }
   }
 }
