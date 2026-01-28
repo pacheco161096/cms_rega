@@ -146,6 +146,9 @@
     },
     "synced": {
       "type": "boolean"
+    },
+    "id_mikrotik_old": {
+      "type": "string"
     }
   }
 }

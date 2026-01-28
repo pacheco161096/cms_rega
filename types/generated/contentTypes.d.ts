@@ -798,6 +798,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     listado_region: Attribute.String;
     ip_address: Attribute.String;
     synced: Attribute.Boolean;
+    id_mikrotik_old: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
